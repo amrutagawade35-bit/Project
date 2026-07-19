@@ -7,7 +7,7 @@ from tensorflow.keras.preprocessing.sequence import pad_sequences
 
 # Page configuration
 st.set_page_config(
-    page_title="Email Spam Detection",
+    page_title="Spam Detection System",
     page_icon="📧",
     layout="wide"
 )
@@ -100,7 +100,7 @@ with st.sidebar:
     st.markdown("""
     **Project Name**
 
-    Email Spam Detection System
+    Spam Detection System
 
 
     **Technology Used**
@@ -124,7 +124,7 @@ with st.sidebar:
 
     **Purpose**
 
-    Detect whether an email is Spam or Safe.
+    Detect whether an email or SMS is Spam or Safe.
     """)
 
 
@@ -136,11 +136,11 @@ st.markdown("""
 <div class="main-box">
 
 <h1 style="text-align:center;color:#1e40af;">
-📧 Email Spam Detection
+📧 Spam Detection System
 </h1>
 
 <p style="text-align:center;font-size:20px;">
-Deep Learning Based Spam Email Classifier
+Deep Learning Based Spam Email and SMS Classifier
 </p>
 
 </div>
@@ -153,9 +153,9 @@ st.write("")
 
 
 email = st.text_area(
-    "✉ Enter Email",
+    "✉ Enter Email or SMS",
     height=200,
-    placeholder="Type your email here..."
+    placeholder="Type your message here..."
 )
 
 
@@ -164,10 +164,21 @@ if st.button("🚀 Predict"):
 
 
     if email.strip()=="":
-        st.warning("Please enter email text")
+        st.warning("Please enter text")
 
 
     else:
+        # Character and Word Count
+        char_count = len(email)
+        word_count = len(email.split())
+
+        col1, col2 = st.columns(2)
+
+        with col1:
+            st.info(f"🔤 Characters: {char_count}")
+
+        with col2:
+            st.info(f"📝 Words: {word_count}")
 
         email_seq = tokenizer.texts_to_sequences([email])
 
@@ -191,7 +202,7 @@ if st.button("🚀 Predict"):
 
         if probability >=0.5:
 
-            st.error("🚨 SPAM EMAIL")
+            st.error("🚨 SPAM ")
 
             st.write(
                 f"Spam Confidence : {probability*100:.2f}%"
@@ -200,7 +211,7 @@ if st.button("🚀 Predict"):
 
         else:
 
-            st.success("✅ SAFE EMAIL")
+            st.success("✅ SAFE ")
 
             st.write(
                 f"Safe Confidence : {(1-probability)*100:.2f}%"
