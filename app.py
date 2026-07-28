@@ -74,63 +74,12 @@ st.markdown("""
 
 }
 
-
-/* Sidebar */
-
-[data-testid="stSidebar"]{
-
-    background:#f8fbff;
-
-}
-
 </style>
 
 """, unsafe_allow_html=True)
 
 
-
-# ---------------- Sidebar ----------------
-
-with st.sidebar:
-
-    st.title("📧 Project Info")
-
-    st.write("---")
-
-    st.markdown("""
-    **Project Name**
-
-    Spam Detection System
-
-
-    **Technology Used**
-
-    🧠 Deep Learning  
-    📝 NLP  
-    🐍 Python  
-    💻 Streamlit  
-    🔥 TensorFlow
-
-
-    **Model**
-
-    Neural Network
-
-
-    **Text Processing**
-
-    Tokenizer + Padding
-
-
-    **Purpose**
-
-    Detect whether an email or SMS is Spam or Safe.
-    """)
-
-
-
 # ---------------- Main Content ----------------
-
 
 st.markdown("""
 <div class="main-box">
@@ -147,8 +96,6 @@ Deep Learning Based Spam Email and SMS Classifier
 
 """, unsafe_allow_html=True)
 
-
-
 st.write("")
 
 
@@ -159,29 +106,14 @@ email = st.text_area(
 )
 
 
-
 if st.button("🚀 Predict"):
 
-
-    if email.strip()=="":
+    if email.strip() == "":
         st.warning("Please enter text")
 
-
     else:
-        # Character and Word Count
-        char_count = len(email)
-        word_count = len(email.split())
-
-        col1, col2 = st.columns(2)
-
-        with col1:
-            st.info(f"🔤 Characters: {char_count}")
-
-        with col2:
-            st.info(f"📝 Words: {word_count}")
 
         email_seq = tokenizer.texts_to_sequences([email])
-
 
         email_pad = pad_sequences(
             email_seq,
@@ -190,29 +122,25 @@ if st.button("🚀 Predict"):
             truncating="post"
         )
 
-
         prediction = model.predict(
             email_pad,
             verbose=0
         )
 
-
         probability = float(prediction[0][0])
 
+        if probability >= 0.5:
 
-        if probability >=0.5:
-
-            st.error("🚨 SPAM ")
+            st.error("🚨 SPAM")
 
             st.write(
-                f"Spam Confidence : {probability*100:.2f}%"
+                f"Spam Confidence: {probability * 100:.2f}%"
             )
-
 
         else:
 
-            st.success("✅ SAFE ")
+            st.success("✅ SAFE")
 
             st.write(
-                f"Safe Confidence : {(1-probability)*100:.2f}%"
+                f"Safe Confidence: {(1 - probability) * 100:.2f}%"
             )
